@@ -27,6 +27,27 @@ function playGame () {
     const humanChoice = undefined;
     const computerChoice = undefined;
 
+    let humanScoreCount = 0;
+    let computerScoreCount = 0;
+
+    const playerBtnChoices = document.querySelectorAll("button");
+    const humanScore = document.querySelector(".humanScore");
+    const computerScore = document.querySelector(".computerScore");
+
+    playerBtnChoices.forEach((button) => {
+        button.addEventListener("click", () => {
+            const humanChoice = button.className;
+            const computerChoice = getComputerChoice();
+            if(!(humanScoreCount == 5) && !(computerScoreCount == 5))
+            playRound(humanChoice, computerChoice);
+            else {
+                const winner = humanScoreCount === 5 ? "You won!" : "Computer won!";
+                alert (`${winner}`);
+                return;
+            }
+        });
+    });
+
     function playRound (humanChoice, computerChoice) {
 
     let roundOutcome = undefined;
@@ -50,33 +71,26 @@ function playGame () {
     }
 
     if (roundOutcome == "Tie") {
-    console.log("Tie! You both picked " + computerChoice);
+    alert ("Tie");
     }
     else if (roundOutcome == "Won"){
-    console.log("You " + roundOutcome + "! " + humanChoice + " beats " + computerChoice);
-    humanScore++;
+    humanScoreCount++;
+    humanScore.textContent = humanScoreCount;
     }
     else {
     console.log("You " + roundOutcome + "! " + computerChoice + " beats " + humanChoice);
-    computerScore++;
-    }
-}
-
-    for (i = 0; i <5; i++) {
-        humanSelection = getHumanChoice();
-        computerSelection = getComputerChoice();
-        playRound(humanSelection, computerSelection);
+    computerScoreCount++;
+    computerScore.textContent = computerScoreCount;
     }
 
-    if (humanScore == computerScore) {
-        console.log ("Its a tie! Final Score: Human " + humanScore + " Computer " + computerScore);
+    if (humanScoreCount === 5 || computerScoreCount === 5) {
+        const winner = humanScoreCount === 5 ? "You win!" : "Computer wins!";
+        setTimeout(() => alert (`${winner}`), 75);
+        return;
     }
-    else if (humanScore > computerScore) {
-        console.log ("Congratulations! You won against the computer. Final Score: Human " + humanScore + " Computer " + computerScore);
-    }
-    else {
-        console.log ("You lost against the computer. Final Score: Human " + humanScore + " Computer " + computerScore);
-    }
+
+}    
+
 }
 
 playGame();
